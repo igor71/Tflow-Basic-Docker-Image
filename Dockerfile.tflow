@@ -39,25 +39,22 @@ ENV LANGUAGE en_US.UTF-8
 RUN apt-get install -y --no-install-recommends \
     curl \
     wget \
-	man \
+    man \
     tree \
     htop \
-	feh \
+    feh \
     vim \
-	zip \
-	unzip \
-	rsync \
-    silversearcher-ag \
-	software-properties-common \
-	build-essential \
+    zip \
+    unzip \
+    rsync \
+    software-properties-common \
+    build-essential \
     screen \
     tmux \
-    byobu \
     vim-gtk \
-	nano \
-	htop \
-	iputils-ping \
-	mercurial \
+    nano \
+    htop \
+    iputils-ping \
     git 
     
    
@@ -157,7 +154,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-get install -y \
     lxde-icon-theme \
     ttf-ubuntu-font-family \
-	gnome-icon-theme-full \
+    gnome-icon-theme-full \
     hicolor-icon-theme \
     xcursor-themes
 
@@ -187,10 +184,6 @@ RUN apt-get install -y --no-install-recommends \
 
 COPY setup_vnc.sh /opt/
 RUN chmod +x /opt/setup_vnc.sh
-
-ENV VNC_DISPLAY 10
-ENV VNC_GEOMETRY 1920x1080
-
 COPY run_vncserver.sh   /opt/
 RUN chmod +x /opt/run_vncserver.sh
 
@@ -209,37 +202,29 @@ RUN apt-get install -y --no-install-recommends \
     xarchiver \
     galculator \
     lxtask && \
-    apt-get install -y gnome-terminal
-    
-# install additional simple terminal application
-RUN apt-get install -y --no-install-recommends \
-    xterm && \
-	apt-get clean && \
+    apt-get install -y gnome-terminal && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 	
-COPY lxde_home_skel/. /etc/skel/
-
 
 #################################################
-#       Create Start Script                     #
+#            Create Start Script                #
 #################################################
-
-# TODO: actually use it in vnc script, hard-coded in /usr/bin/vncserver perl script
 
 RUN mkdir -p /etc/skel/.vnc && \
     echo '#! /bin/bash\n\
-xsetroot -cursor_name left_ptr\n\
-autocutsel -s CLIPBOARD -fork\n\
-export XKL_XMODMAP_DISABLE=1\n\
-openbox --sm-disable &\n\
-pcmanfm --desktop &\n\
-lxpanel \n\
-' > /etc/skel/.vnc/xstartup && \
+    xsetroot -cursor_name left_ptr\n\
+    autocutsel -s CLIPBOARD -fork\n\
+    export XKL_XMODMAP_DISABLE=1\n\
+    openbox --sm-disable &\n\
+    pcmanfm --desktop &\n\
+    lxpanel \n\
+    ' > /etc/skel/.vnc/xstartup && \
     chmod +x /etc/skel/.vnc/xstartup
 
 
 #################################################
-#       Final touches                           #
+#                 Final touches                 #
 #################################################
 
 RUN echo '#!/bin/bash\n\
