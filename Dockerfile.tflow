@@ -1,0 +1,259 @@
+# Base development environment: LXDE desktop with VNC and user management
+
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+
+#################################################
+#  Update repositories -- we will need them all #
+#  the time, also when container is run         #
+#################################################
+
+ARG DEBIAN_FRONTEND=noninteractive 
+RUN apt-get update
+
+
+#################################################
+#          Set Time Zone Asia/Jerusalem         #
+################################################# 
+   
+ENV TZ=Asia/Jerusalem
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
+################################################
+#     Basic desktop environment                #
+################################################
+
+# Locale, language
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+locale-gen
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+    
+#################################################
+#     Very basic installations                  #
+#################################################
+
+RUN apt-get install -y --no-install-recommends \
+    curl \
+    wget \
+	man \
+    tree \
+    htop \
+	feh \
+    vim \
+	zip \
+	unzip \
+	rsync \
+    silversearcher-ag \
+	software-properties-common \
+	build-essential \
+    screen \
+    tmux \
+    byobu \
+    vim-gtk \
+	nano \
+	htop \
+	iputils-ping \
+	mercurial \
+    git 
+    
+   
+#################################################
+# PID 1 - signal forwarding and zombie fighting #
+#################################################
+
+# Add Tini
+ARG TINI_VERSION=v0.16.1
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+
+RUN chmod +x /tini
+
+
+#################################################
+#     Shell niceties                            #
+#################################################
+
+# show docker name in prompts
+RUN echo 'export PS1="[${CONTAINER:-docker}] $PS1"' | tee -a /etc/skel/.bashrc /root/.bashrc
+# nice input
+ADD inputrc /etc/inputrc
+
+	
+#################################################
+#     User and system management                #
+#################################################
+
+# gosu - run as user (avoids problems with sudo and su)
+RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.7-1_amd64.deb && \
+    dpkg -i gosu_1.7-1_amd64.deb && \
+    rm gosu_1.7-1_amd64.deb && \
+    apt-get install -f
+
+COPY add_user.sh /root/
+RUN chmod +x /root/add_user.sh
+COPY exec_as_user.sh /root/
+RUN chmod +x /root/exec_as_user.sh
+COPY exec_as_host_user_or_root.sh /root/
+RUN chmod +x /root/exec_as_host_user_or_root.sh
+COPY enable_docker.sh /root/
+RUN chmod +x /root/enable_docker.sh
+
+
+###########################################################################################################################
+# Add docker executable: Docker binary copied into image to allow executing docker commands on the host from container    # 
+# it should be standalone binary:                                                                                         #
+# download from https://github.com/docker/docker/releases                                                                 #
+# make sure it matches your daemon version                                                                                #
+###########################################################################################################################
+
+COPY docker/docker-1.13.1-092cba3 /usr/bin/docker
+COPY nvidia-docker-via-rest-api.sh /usr/bin/nvidia-docker
+
+
+###########################################################
+#   Set gpu_status command work inside docker container   #
+###########################################################
+
+RUN echo '#!/usr/bin/env bash\n\
+nvidia-docker run -it --rm --pid=host -v /var/run/docker.sock:/var/run/docker.sock:ro -v /etc/passwd:/etc/passwd:ro yi/gpu_status\n\
+' > /usr/local/bin/gpu_status \
+  && chmod a+rx,o-w /usr/local/bin/gpu_status
+
+  
+#################################################
+#     Fix problems with dictionaries-common     #
+#################################################
+
+# See https://bugs.launchpad.net/ubuntu/+source/dictionaries-common/+bug/873551
+RUN apt-get install -y \
+    apt-utils && \
+    /usr/share/debconf/fix_db.pl && \
+    apt-get install -y -f
+
+	
+##########################################################
+#  Some utils to have proper menus, mime file types etc. #
+##########################################################
+
+RUN apt-get install -y --no-install-recommends \
+    xdg-utils && \
+    apt-get install -y \
+    menu \
+    menu-xdg \
+    mime-support \
+    desktop-file-utils 
+
+
+#################################	
+#      Install core LXDE        #
+#################################
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    lxde-core \
+    lxde-common && \
+    apt-get install -y \
+    lxde-icon-theme \
+    ttf-ubuntu-font-family \
+	gnome-icon-theme-full \
+    hicolor-icon-theme \
+    xcursor-themes
+
+################################################
+#     VNC server                               #
+################################################
+
+# Install vncserver
+RUN apt-get install -y \
+    tightvncserver
+
+# x11-utils: some X libs, f.e. allowing videos in Xephyr
+# x11-server-utils: xrdb, xrandr and some other goodies
+RUN apt-get install -y --no-install-recommends \
+    x11-utils \
+    autocutsel \
+    xfonts-100dpi \
+    xfonts-75dpi \
+    gsfonts-x11 && \
+    apt-get install -y \
+    x11-xserver-utils 
+    
+	
+#################################################
+#       Prepare to run VNC server               #
+#################################################
+
+COPY setup_vnc.sh /opt/
+RUN chmod +x /opt/setup_vnc.sh
+
+ENV VNC_DISPLAY 10
+ENV VNC_GEOMETRY 1920x1080
+
+COPY run_vncserver.sh   /opt/
+RUN chmod +x /opt/run_vncserver.sh
+
+
+#################################################
+#       Some useful lxde apps                   #
+#################################################
+
+RUN apt-get install -y --no-install-recommends \
+    lxappearance \
+    ffmpegthumbnailer \
+    leafpad \
+    gpicview \
+    lxshortcut \
+    obconf \
+    xarchiver \
+    galculator \
+    lxtask && \
+    apt-get install -y gnome-terminal
+    
+# install additional simple terminal application
+RUN apt-get install -y --no-install-recommends \
+    xterm && \
+	apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+	
+COPY lxde_home_skel/. /etc/skel/
+
+
+#################################################
+#       Create Start Script                     #
+#################################################
+
+# TODO: actually use it in vnc script, hard-coded in /usr/bin/vncserver perl script
+
+RUN mkdir -p /etc/skel/.vnc && \
+    echo '#! /bin/bash\n\
+xsetroot -cursor_name left_ptr\n\
+autocutsel -s CLIPBOARD -fork\n\
+export XKL_XMODMAP_DISABLE=1\n\
+openbox --sm-disable &\n\
+pcmanfm --desktop &\n\
+lxpanel \n\
+' > /etc/skel/.vnc/xstartup && \
+    chmod +x /etc/skel/.vnc/xstartup
+
+
+#################################################
+#       Final touches                           #
+#################################################
+
+RUN echo '#!/bin/bash\n\
+if [ -z "$HOST_USER" ]; then\n\
+    echo "Error: please specify $HOST_USER to run this docker image"\n\
+    exit 1\n\
+fi\n\
+/root/add_user.sh\n\
+/root/enable_docker.sh\n\
+USER=$HOST_USER gosu $HOST_USER /opt/setup_vnc.sh\n\
+exec /root/exec_as_host_user_or_root.sh "$@"\n\
+' > /root/entrypoint.sh && \
+    chmod +x /root/entrypoint.sh
+
+	
+ENTRYPOINT ["/tini", "--", "/root/entrypoint.sh"]
+CMD ["/opt/run_vncserver.sh"]
