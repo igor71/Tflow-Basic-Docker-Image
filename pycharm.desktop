@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
 Exec=pycharm
-Icon=/opt/pycharm-community-2017.3.3/bin/pycharm.png
+Icon=/opt/pycharm-community-2018.1.4/bin/pycharm.png
 Type=Application
 Terminal=false
 Name=PyCharm
