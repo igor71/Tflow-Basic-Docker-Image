@@ -1,5 +1,5 @@
 pipeline {
-  agent {label 'yi-caffe-tf'}
+  agent {label 'yi-tensorflow'}
     stages {
         stage('Build yi/tflow:latest Docker Image') {
             steps {
