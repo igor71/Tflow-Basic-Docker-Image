@@ -47,6 +47,7 @@ RUN apt-get install -y --no-install-recommends \
     zip \
     unzip \
     rsync \
+    silversearcher-ag \
     software-properties-common \
     build-essential \
     screen \
@@ -55,6 +56,7 @@ RUN apt-get install -y --no-install-recommends \
     nano \
     htop \
     iputils-ping \
+    mercurial \
     git 
     
    
