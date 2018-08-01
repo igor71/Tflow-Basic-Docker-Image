@@ -10,85 +10,28 @@ FROM yi/tflow:latest
 ARG DEBIAN_FRONTEND=noninteractive 
 RUN apt-get update
 
-	
-#################################################
-#       Video and image processing              #
-#################################################
+			
+#######################################
+#            Installing cmake         #
+#######################################
 
-RUN apt-get install -y --no-install-recommends \	
-	ffmpeg 
-	 
-ARG IMAGEMAGIC_DEB=http://www.imagemagick.org/download/ImageMagick.tar.gz
-RUN curl -OSL ${IMAGEMAGIC_DEB} && \
-    tar xvzf ImageMagick.tar.gz && \
-	cd ImageMagic* && \
-	./configure && \
-	make && \
-        make install && \
-        ldconfig /usr/local/lib && \
-	cd .. && \
-	rm tar xvzf ImageMagick.tar.gz \
-	rm -rf ImageMagick* && \
-	rm -rf /tmp/* /var/tmp/*
-	
-	
-#################################################
-#               Install Mercurial               #
-#################################################
-
-ARG MERCURIAL_COMMON_DEB=http://old-releases.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_3.9.1-1_all.deb
-ARG MERCURIAL_DEB=http://old-releases.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial_3.9.1-1_amd64.deb
-RUN apt-get purge -y mercurial mercurial-common && \
-    apt-get install -y --no-install-recommends libjs-excanvas && \
-    curl -OSL ${MERCURIAL_COMMON_DEB} && \
-    dpkg -i $(basename ${MERCURIAL_COMMON_DEB}) && \
-    rm $(basename ${MERCURIAL_COMMON_DEB}) && \
-    curl -OSL ${MERCURIAL_DEB} && \
-    dpkg -i $(basename ${MERCURIAL_DEB}) && \
-    rm $(basename ${MERCURIAL_DEB}) && \
-    apt-get install -f && \
-    rm -rf /tmp/* /var/tmp/*
-	
-	
-#################################################
-#             Install TortoiseHg                #
-#################################################
-
-ARG TORTOISE_HG_DEB=http://mirror.ubuntu-cdn.net/ubuntu-ports/pool/universe/t/tortoisehg/tortoisehg_3.9-1_all.deb
-RUN apt-get install -y --no-install-recommends \
-    python-qt4 \
-    python-qscintilla2 \
-    python-iniparse \
-    python-gobject && \
-    curl -OSL ${TORTOISE_HG_DEB} && \
-    dpkg -i $(basename ${TORTOISE_HG_DEB}) && \
-    rm $(basename ${TORTOISE_HG_DEB}) && \
-    apt-get install -f && \
-    rm -rf /tmp/* /var/tmp/*
-	
-		
-#################################################
-#              Install PyCharm                  #
-#################################################
-
-ARG PYCHARM_NAME=pycharm-community-2018.1.4
-ARG PYCHARM_URL=https://download.jetbrains.com/python/${PYCHARM_NAME}.tar.gz
-RUN curl -SL ${PYCHARM_URL} \
-    | tar -xzC /opt/
-#ADD ${PYCHARM_NAME}.tar.gz /opt/ 
-RUN ln -s /opt/${PYCHARM_NAME}/bin/pycharm.sh /usr/local/bin/pycharm
-# extra installations for pycharm
-RUN apt-get install -y --no-install-recommends \
-    libxext6 \
-    libxtst6 \
-    libxrender1 \
-    libxi6 \
-    libfontconfig1 \
-    xauth
-	
-COPY pycharm.desktop /usr/local/share/applications/
-
-
+RUN \
+    cd ~ && \
+    version=3.11 && \
+    build=3 && \
+    mkdir ~/temp && \
+    cd temp && \
+    wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz && \
+    tar -xzvf cmake-$version.$build.tar.gz && \
+    cd cmake-$version.$build && \
+    ./bootstrap && \
+    make -j4 && \
+    make install && \
+    cmake --version && \
+    cd ~ && \
+    rm -rf temp
+    
+    
 #################################################
 #             Install BeyondCompare             #
 #################################################
