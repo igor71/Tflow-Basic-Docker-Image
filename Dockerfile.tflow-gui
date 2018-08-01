@@ -65,31 +65,7 @@ RUN add-apt-repository ppa:openjdk-r/ppa -y && \
 # Remove repository
 RUN add-apt-repository --remove ppa:openjdk-r/ppa
 
-
- ###################
- # Installin CLion #
- ###################
- 
- RUN apt-get install -y --no-install-recommends \
-     libxi6 \
-     libxrender1 \
-     make \
-     clang-3.5 \
-     libxtst6 -y && \
-     mkdir -p /root/clion && \
-     cd /root/clion 
-     ARG CLION=CLion-2018.2.tar.gz
-     ARG CRED="server:123server123"
-     RUN curl -u ${CRED} ftp://yifileserver/IT/Linux-Software/${CLION} -o ${CLION} && \
-         tar xfz ${CLION} 
-     RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.5 100 && \
-         update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang-3.5 100 
-     RUN ln -s /usr/bin/clang-3.5 /usr/bin/clang && \
-         ln -s /usr/bin/clang++-3.5 /usr/bin/clang++ 
-     RUN  /root/clion/clion-2018.2/bin/clion.sh && \
-	  rm -f ${CLION}
-     	
-	
+     		
 ####################
 # Install SmartGit #
 ####################
