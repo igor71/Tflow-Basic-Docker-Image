@@ -1,6 +1,6 @@
 # Base development environment: LXDE desktop with VNC and user management
 
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04
+FROM ubuntu:16.04
 
 #################################################
 #  Update repositories -- we will need them all #
@@ -47,15 +47,20 @@ RUN apt-get install -y --no-install-recommends \
     zip \
     unzip \
     rsync \
+    iputils-ping \
+    dnsutils \
+    net-tools \
     silversearcher-ag \
     software-properties-common \
     build-essential \
+    python-dev \
+    python-pip \
+    python-setuptools \
     screen \
     tmux \
     vim-gtk \
     nano \
     htop \
-    iputils-ping \
     mercurial \
     git 
     
