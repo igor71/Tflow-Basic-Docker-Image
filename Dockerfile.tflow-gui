@@ -82,7 +82,7 @@ RUN add-apt-repository --remove ppa:openjdk-r/ppa
      ARG CRED="server:123server123"
      RUN curl -u ${CRED} ftp://yifileserver/IT/Linux-Software/${CLION} -o ${CLION} && \
          tar xfz ${CLION} 
-     RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.5 100 \
+     RUN update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.5 100 && \
          update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang-3.5 100 
      RUN ln -s /usr/bin/clang-3.5 /usr/bin/clang && \
          ln -s /usr/bin/clang++-3.5 /usr/bin/clang++ 
