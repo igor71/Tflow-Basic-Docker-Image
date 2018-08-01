@@ -86,7 +86,7 @@ RUN add-apt-repository --remove ppa:openjdk-r/ppa
          update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang-3.5 100 
      RUN ln -s /usr/bin/clang-3.5 /usr/bin/clang && \
          ln -s /usr/bin/clang++-3.5 /usr/bin/clang++ 
-     RUN  /root/clion/${CLION}/bin/clion.sh && \
+     RUN  /root/clion/clion-2018.2/bin/clion.sh && \
 	  rm -f ${CLION}
      	
 	
