@@ -64,8 +64,32 @@ RUN add-apt-repository ppa:openjdk-r/ppa -y && \
 
 # Remove repository
 RUN add-apt-repository --remove ppa:openjdk-r/ppa
-	
 
+
+ ###################
+ # Installin CLion #
+ ###################
+ 
+ RUN apt-get install -y --no-install-recommends \
+     libxi6 \
+     libxrender1 \
+     make \
+     clang-3.5 \
+     update-alternatives --install /usr/bin/cc cc /usr/bin/clang-3.5 100 \
+     update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang-3.5 100 \
+     ln -s /usr/bin/clang-3.5 /usr/bin/clang \
+     ln -s /usr/bin/clang++-3.5 /usr/bin/clang++ \
+     libxtst6 -y && \
+     mkdir ~/clion && \
+     cd ~/clion && \
+     ARG CLION=CLion-2018.2.tar.gz
+     ARG CRED="server:123server123"
+     RUN  curl -u ${CRED} ftp://yifileserver/IT/Linux-Software/$CLION} -o ${CLION} && \
+          tar xfz ${CLION} 
+     RUN  /root/clion/${CLION}/bin/clion.sh && \
+	  rm -f ${CLION}
+     	
+	
 ####################
 # Install SmartGit #
 ####################
@@ -76,7 +100,7 @@ RUN curl -OSL ${SMARTGIT_DEB} && \
     rm $(basename ${SMARTGIT_DEB}) && \
     apt-get install -f && \
     rm -rf /tmp/* /var/tmp/*
-	
+    
 		
 #######################
 # Install SSH Client  #
