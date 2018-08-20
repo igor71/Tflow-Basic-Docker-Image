@@ -39,6 +39,28 @@ pipeline {
                    ''' 
 		    }
 		}
+	 stage('Save & Load Docker Image') { 
+            steps {
+                sh '''#!/bin/bash -xe
+		        echo 'Saving Docker image into tar archive'
+                        docker save yi/tflow-gui:latest | pv -f | cat > $WORKSPACE/yi-tflow-gui-latest.tar
+			
+                        echo 'Remove Original Docker Image' 
+			CURRENT_ID=$(docker images | grep -E '^yi/tflow-gui.*latest' | awk -e '{print $3}')
+			docker rmi -f $CURRENT_ID
+			
+                        echo 'Loading Docker Image'
+                        pv -f $WORKSPACE/yi-tflow-gui-latest.tar | docker load
+			docker tag $CURRENT_ID yi/tflow:0.0
+                        
+                        echo 'Removing temp archive.'  
+                        rm $WORKSPACE/yi-tflow-gui-latest.tar
+			
+			echo 'Removing yi/tflow:latest Docker Image'
+			docker rmi -f yi/tflow:latest
+                   ''' 
+		    }
+		}
  }
 	post {
             always {
