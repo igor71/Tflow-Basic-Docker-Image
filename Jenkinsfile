@@ -1,6 +1,19 @@
 pipeline {
   agent {label 'yi-tensorflow'}
     stages {
+	stage('Import Base Docker Image') {
+            steps {
+                sh '''#!/bin/bash -xe
+                   if test ! -z "$(docker images -q nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04)"; then
+                      echo "Docker Image Already Exist!!!"
+                   else
+                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-devel-ubuntu16.04.tar | docker load
+                      docker tag 6d001d3d0357 yi/tflow-gui:latest
+                      echo "DONE!!!"
+                   fi
+		            ''' 
+            }
+        }
         stage('Build yi/tflow:latest Docker Image') {
             steps {
 	       sh 'docker build -f Dockerfile.tflow -t yi/tflow:latest .'  
