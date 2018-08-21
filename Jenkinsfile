@@ -64,7 +64,7 @@ pipeline {
 			
                         echo 'Loading Docker Image'
                         pv -f $WORKSPACE/yi-tflow-gui-latest.tar | docker load
-			docker tag $CURRENT_ID yi/tflow:0.0
+			docker tag $CURRENT_ID yi/tflow-gui:latest
                         
                         echo 'Removing temp archive.'  
                         rm $WORKSPACE/yi-tflow-gui-latest.tar
