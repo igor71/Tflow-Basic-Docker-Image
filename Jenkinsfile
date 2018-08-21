@@ -3,15 +3,15 @@ pipeline {
     stages {
         stage('Build yi/tflow:latest Docker Image') {
             steps {
-	       sh 'docker build -f Dockerfile.tflow -t yi/tflow:latest .'  
+	       sh 'docker build -f Dockerfile.tflow -t yi/tflow:0.0 .'  
             }
         }
 	stage('Test yi/tflow:latest Docker Image') { 
             steps {
                 sh '''#!/bin/bash -xe
 		    echo 'Hello, YI-TFLOW!!'
-                    image_id="$(docker images -q yi/tflow:latest)"
-                      if [[ "$(docker images -q yi/tflow:latest 2> /dev/null)" == "$image_id" ]]; then
+                    image_id="$(docker images -q yi/tflow:0.0)"
+                      if [[ "$(docker images -q yi/tflow:0.0 2> /dev/null)" == "$image_id" ]]; then
                           docker inspect --format='{{range $p, $conf := .RootFS.Layers}} {{$p}} {{end}}' $image_id
                       else
                           echo "It appears that current docker image corrapted!!!"
@@ -22,15 +22,15 @@ pipeline {
         }
         stage('Build yi/tflow-gui:latest Docker Image ') {
             steps {
-	       sh 'docker build -f Dockerfile.tflow-gui -t yi/tflow-gui:latest .'  
+	       sh 'docker build -f Dockerfile.tflow-gui -t yi/tflow-gui:0.0 .'  
             }
         }
 	stage('Test yi/tflow-gui:latest Docker Image') { 
             steps {
                 sh '''#!/bin/bash -xe
 		   echo 'Hello, Jenkins_Docker'
-                    image_id="$(docker images -q yi/tflow-gui:latest)"
-                      if [[ "$(docker images -q yi/tflow-gui:latest 2> /dev/null)" == "$image_id" ]]; then
+                    image_id="$(docker images -q yi/tflow-gui:0.0)"
+                      if [[ "$(docker images -q yi/tflow-gui:0.0 2> /dev/null)" == "$image_id" ]]; then
                           docker inspect --format='{{range $p, $conf := .RootFS.Layers}} {{$p}} {{end}}' $image_id
                       else
                           echo "It appears that current docker image corrapted!!!"
