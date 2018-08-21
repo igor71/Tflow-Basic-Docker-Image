@@ -14,7 +14,7 @@ pipeline {
         }
         stage('Build yi/tflow:latest Docker Image') {
             steps {
-	       sh 'docker build -f Dockerfile.tflow -t yi/tflow:latest .'  
+	       sh 'docker build --no-cache -f Dockerfile.tflow -t yi/tflow:latest .'  
             }
         }
 	stage('Test yi/tflow:latest Docker Image') { 
@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Build yi/tflow-gui:0.0 Docker Image ') {
             steps {
-	        sh 'docker build -f Dockerfile.tflow-gui -t yi/tflow-gui:0.0 .'  
+	        sh 'docker build --no-cache -f Dockerfile.tflow-gui -t yi/tflow-gui:0.0 .'  
             }
         }
 	    stage('Test yi/tflow-gui:0.0 Docker Image') { 
