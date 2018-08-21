@@ -5,6 +5,8 @@ Basic Image for building yi/tflow-vnc:xxx docker image
 ```
 Make sure nvidia/cuda:X.0-cudnnX-devel-ubuntu16.04 image existing on the target server
 
+Jenkins supouse to load docker image during buils proccess, if not:
+
 pv /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-devel-ubuntu16.04.tar | docker load
 
 docker images
