@@ -1,2 +1,2 @@
-# Tflow-Basic-Docker-Image
-Basic Image (first step) for building yi/tflow-vnc  docker image
+# Basic-Docker-Image
+Basic docker image based on ubuntu:16:04 without nvidia packages
