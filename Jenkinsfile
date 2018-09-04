@@ -4,11 +4,11 @@ pipeline {
 	stage('Import Base Docker Image') {
             steps {
                 sh '''#!/bin/bash -xe
-                   if test ! -z "$(docker images -q nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04)"; then
+                   if test ! -z "$(docker images -q nvidia/cuda:9.0-cudnn7-base4)"; then
                       echo "Docker Image Already Exist!!!"
                    else
                       pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-devel-ubuntu16.04.tar | docker load
-                      docker tag 6d001d3d0357 yi/tflow-gui:latest
+                      docker tag b82f2e7e5be4 yi/tflow-gui:latest
                       echo "DONE!!!"
                    fi
 		            ''' 
