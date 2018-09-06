@@ -1,4 +1,0 @@
-[Command]
-FileManager=pcmanfm %s 
-Terminal=xterm
-Logout=pkill lxpanel
