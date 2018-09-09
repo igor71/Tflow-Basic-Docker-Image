@@ -42,7 +42,6 @@ RUN apt-get install -y --no-install-recommends \
     man \
     tree \
     htop \
-    feh \
     vim \
     zip \
     unzip \
@@ -70,7 +69,7 @@ RUN apt-get install -y --no-install-recommends \
 #################################################
 
 # Add Tini
-ARG TINI_VERSION=v0.16.1
+ARG TINI_VERSION=v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 
 RUN chmod +x /tini
@@ -91,9 +90,9 @@ ADD inputrc /etc/inputrc
 #################################################
 
 # gosu - run as user (avoids problems with sudo and su)
-RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.7-1_amd64.deb && \
-    dpkg -i gosu_1.7-1_amd64.deb && \
-    rm gosu_1.7-1_amd64.deb && \
+RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.10-1_amd64.deb && \
+    dpkg -i gosu_1.10-1_amd64.deb && \
+    rm gosu_1.10-1_amd64.deb && \
     apt-get install -f
 
 COPY add_user.sh /root/
