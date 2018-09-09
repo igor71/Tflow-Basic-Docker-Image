@@ -21,3 +21,12 @@ docker tag <image_id> nvidia/cuda:X.0-cudnnX-devel-ubuntu16.04
 
 docker tag <image_id> nvidia/cuda:X.0-cudnnX-base
 ```
+
+### Manual Buils steps:
+```
+git clone --branch=master --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
+
+cd Tflow-Basic-Docker-Image
+
+./tflow-build-all.sh
+```
