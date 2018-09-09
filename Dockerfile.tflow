@@ -13,8 +13,8 @@ RUN apt-get update
 
 #################################################
 #          Set Time Zone Asia/Jerusalem         #
-################################################# 
-   
+#################################################
+
 ENV TZ=Asia/Jerusalem
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
@@ -31,7 +31,7 @@ ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
 
-    
+
 #################################################
 #     Very basic installations                  #
 #################################################
@@ -41,7 +41,6 @@ RUN apt-get install -y --no-install-recommends \
     wget \
     man \
     tree \
-    htop \
     feh \
     vim \
     zip \
@@ -58,8 +57,7 @@ RUN apt-get install -y --no-install-recommends \
     iputils-ping \
     mercurial \
     git 
-    
-   
+
 #################################################
 # PID 1 - signal forwarding and zombie fighting #
 #################################################
@@ -80,7 +78,7 @@ RUN echo 'export PS1="[${CONTAINER:-docker}] $PS1"' | tee -a /etc/skel/.bashrc /
 # nice input
 ADD inputrc /etc/inputrc
 
-	
+
 #################################################
 #     User and system management                #
 #################################################
@@ -121,7 +119,7 @@ nvidia-docker run -it --rm --pid=host -v /var/run/docker.sock:/var/run/docker.so
 ' > /usr/local/bin/gpu_status \
   && chmod a+rx,o-w /usr/local/bin/gpu_status
 
-  
+
 #################################################
 #     Fix problems with dictionaries-common     #
 #################################################
@@ -132,7 +130,7 @@ RUN apt-get install -y \
     /usr/share/debconf/fix_db.pl && \
     apt-get install -y -f
 
-	
+
 ##########################################################
 #  Some utils to have proper menus, mime file types etc. #
 ##########################################################
@@ -143,10 +141,10 @@ RUN apt-get install -y --no-install-recommends \
     menu \
     menu-xdg \
     mime-support \
-    desktop-file-utils 
+    desktop-file-utils
 
 
-#################################	
+#################################
 #      Install core LXDE        #
 #################################
 
@@ -178,14 +176,14 @@ RUN apt-get install -y --no-install-recommends \
     gsfonts-x11 && \
     apt-get install -y \
     x11-xserver-utils 
-    
-	
+
 #################################################
 #       Prepare to run VNC server               #
 #################################################
 
 COPY setup_vnc.sh /opt/
 RUN chmod +x /opt/setup_vnc.sh
+
 COPY run_vncserver.sh   /opt/
 RUN chmod +x /opt/run_vncserver.sh
 
@@ -204,34 +202,31 @@ RUN apt-get install -y --no-install-recommends \
     xarchiver \
     galculator \
     lxtask && \
-    apt-get install -y gnome-terminal && \
+    apt-get install -y gnome-terminal
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-    
-#################################################
-#   Setting Default Home Directory Properties   #
-#################################################
 
 COPY lxde_home_skel/. /etc/skel/
 
+
 #################################################
-#            Create Start Script                #
+#       Create Start Script                     #
 #################################################
 
 RUN mkdir -p /etc/skel/.vnc && \
     echo '#! /bin/bash\n\
-    xsetroot -cursor_name left_ptr\n\
-    autocutsel -s CLIPBOARD -fork\n\
-    export XKL_XMODMAP_DISABLE=1\n\
-    openbox --sm-disable &\n\
-    pcmanfm --desktop &\n\
-    lxpanel \n\
-    ' > /etc/skel/.vnc/xstartup && \
+xsetroot -cursor_name left_ptr\n\
+autocutsel -s CLIPBOARD -fork\n\
+export XKL_XMODMAP_DISABLE=1\n\
+openbox --sm-disable &\n\
+pcmanfm --desktop &\n\
+lxpanel \n\
+' > /etc/skel/.vnc/xstartup && \
     chmod +x /etc/skel/.vnc/xstartup
 
 
 #################################################
-#                 Final touches                 #
+#       Final touches                           #
 #################################################
 
 RUN echo '#!/bin/bash\n\
@@ -246,6 +241,6 @@ exec /root/exec_as_host_user_or_root.sh "$@"\n\
 ' > /root/entrypoint.sh && \
     chmod +x /root/entrypoint.sh
 
-	
 ENTRYPOINT ["/tini", "--", "/root/entrypoint.sh"]
 CMD ["/opt/run_vncserver.sh"]
+
