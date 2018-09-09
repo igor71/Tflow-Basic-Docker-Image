@@ -13,3 +13,12 @@ docker images
 
 docker tag <image_id> ubuntu:16:04
 ```
+### Manual Buils steps:
+```
+git clone --branch=develop --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
+
+cd Tflow-Basic-Docker-Image
+
+./tflow-build-all.sh
+```
+
