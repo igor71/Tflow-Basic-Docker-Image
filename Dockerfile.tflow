@@ -84,7 +84,7 @@ ADD inputrc /etc/inputrc
 #################################################
 
 # gosu - run as user (avoids problems with sudo and su)
-RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.7-1_amd64.deb && \
+RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.10-1_amd64.deb && \
     dpkg -i gosu_1.7-1_amd64.deb && \
     rm gosu_1.7-1_amd64.deb && \
     apt-get install -f
