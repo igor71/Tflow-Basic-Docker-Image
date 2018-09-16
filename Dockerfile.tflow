@@ -50,6 +50,7 @@ RUN apt-get install -y --no-install-recommends \
     dnsutils \
     net-tools \
     silversearcher-ag \
+    openssh-client \
     software-properties-common \
     build-essential \
     python-dev \
