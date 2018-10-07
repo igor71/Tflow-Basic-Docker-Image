@@ -19,6 +19,6 @@ git clone --branch=develop --depth=1 https://github.com/igor71/Tflow-Basic-Docke
 
 cd Tflow-Basic-Docker-Image
 
-./tflow-build-all.sh
+bash tflow-build-all.sh
 ```
 
