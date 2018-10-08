@@ -21,4 +21,13 @@ cd Tflow-Basic-Docker-Image
 
 bash tflow-build-all.sh
 ```
+### Manual Buils Steps For ADAS-BUILD Docker:
+```
+pv /media/common/DOCKER_IMAGES/Tflow-GUI/9.0-cudnn7-base/yi-tflow-gui-latest.tar | docker load
 
+docker images
+
+docker tag e9395c7651ae yi/tflow-gui:latest
+
+docker build -f Dockerfile.tflow-gui-build -t yi/adas-gui:0.1 .
+```
