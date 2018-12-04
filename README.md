@@ -5,7 +5,7 @@
 ```
 Make sure nvidia/cuda:X.0-cudnnX-devel-ubuntu16.04 or nvidia/cuda:X.0-cudnnX-base images are existing on the target server
 
-nvidia/cuda:X.0-cudnnX-devel-ubuntu16.04 -->> used with tensorflow up to version 1.9
+nvidia/cuda:X.0-cudnnX-devel-ubuntu16.04 & nvidia/cuda:9.0-cudnn7-base-1.5-1.9 -->> used with tensorflow up to version 1.9
 
 nvidia/cuda:X.0-cudnnX-base  -->> used with tensorflow from version 1.10 and above
 
