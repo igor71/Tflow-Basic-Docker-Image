@@ -23,7 +23,8 @@ RUN curl -OSL ${IMAGEMAGIC_DEB} && \
     tar xvzf ImageMagick.tar.gz && \
 	cd ImageMagic* && \
 	./configure && \
-	make && \
+	nc=`nproc`
+	make -j$nc && \
         make install && \
         ldconfig /usr/local/lib && \
 	cd .. && \
