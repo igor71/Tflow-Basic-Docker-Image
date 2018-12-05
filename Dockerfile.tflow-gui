@@ -55,7 +55,7 @@ RUN apt-get purge -y mercurial mercurial-common && \
 #             Install TortoiseHg                #
 #################################################
 
-ARG TORTOISE_HG_DEB=http://mirror.ubuntu-cdn.net/ubuntu-ports/pool/universe/t/tortoisehg/tortoisehg_3.9-1_all.deb
+ARG TORTOISE_HG_DEB=ftp://192.168.1.115/pub/Tflow-VNC-Soft/tortoisehg_3.9-1_all.deb
 RUN apt-get install -y --no-install-recommends \
     python-qt4 \
     python-qscintilla2 \
