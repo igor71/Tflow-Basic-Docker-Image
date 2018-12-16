@@ -50,6 +50,28 @@ RUN apt-get install -y --no-install-recommends \
 COPY BC4Key.txt /etc/
 
 
+#################################################
+#              Install PyCharm                  #
+#################################################
+
+ARG PYCHARM_NAME=pycharm-community-2018.1.4
+ARG PYCHARM_URL=https://download.jetbrains.com/python/${PYCHARM_NAME}.tar.gz
+RUN curl -SL ${PYCHARM_URL} \
+    | tar -xzC /opt/
+#ADD ${PYCHARM_NAME}.tar.gz /opt/ 
+RUN ln -s /opt/${PYCHARM_NAME}/bin/pycharm.sh /usr/local/bin/pycharm
+# extra installations for pycharm
+RUN apt-get install -y --no-install-recommends \
+    libxext6 \
+    libxtst6 \
+    libxrender1 \
+    libxi6 \
+    libfontconfig1 \
+    xauth
+	
+COPY pycharm.desktop /usr/local/share/applications/
+
+
 ################################################################################
 #                              Install Java                                    #
 ################################################################################
@@ -88,6 +110,3 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-client && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
