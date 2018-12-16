@@ -30,4 +30,12 @@ docker images
 docker tag e9395c7651ae yi/tflow-gui:latest
 
 docker build -f Dockerfile.tflow-gui-build -t yi/adas-gui:0.1 .
+
+Run docker image:
+
+yi-docker tflow-vnc-<your suffix_here> run :<port_number> 1920x1080 --image=yi/adas-gui  --version=0.1
+
+e.g.
+
+yi-docker tflow-vnc-adas run :13 1920x1080 --image=yi/adas-gui  --version=0.1
 ```
