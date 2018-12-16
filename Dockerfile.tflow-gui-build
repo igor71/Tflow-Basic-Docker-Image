@@ -3,6 +3,27 @@ MAINTAINER Igor Rabkin <igor.rabkin@xiaoyi.com>
 
 
 #################################################
+#          Set Time Zone Asia/Jerusalem         #
+################################################# 
+
+ENV TZ=Asia/Jerusalem
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+
+################################################
+#     Basic desktop environment                #
+################################################
+
+# Locale, language
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+locale-gen
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+
+
+#################################################
 #     Very basic installations                  #
 #################################################
 
@@ -20,6 +41,22 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     nfs-common \
     pkg-config && \
     dpkg-reconfigure -f noninteractive tzdata 
+    
+    
+#################################################
+#     Python 3.6 installations for dev          #
+#################################################
+
+RUN add-apt-repository ppa:jonathonf/python-3.6 && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    python3.6 \
+	python3.6-dev \
+	python3.6-venv 
+	
+RUN ln -s /usr/bin/python3.6 /usr/local/bin/python3 && \
+    ln -s /usr/local/bin/pip /usr/local/bin/pip3 && \
+    ln -s /usr/bin/python3.6 /usr/local/bin/python
+
 
 #################################################
 #     Adding suppoert for i386 architecture     #
@@ -31,36 +68,12 @@ RUN dpkg --add-architecture i386 && \
     libncurses5:i386 \
     libstdc++6:i386
 
-#######################################
-#            Installing cmake         #
-#######################################
-
-RUN apt-get install -y --no-install-recommends \
-    openssl \
-    libssl-dev
-
-ARG version=3.12
-ARG build=1
-RUN cd /usr/local/src \
-    && wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz \
-    && tar -xzvf cmake-$version.$build.tar.gz \
-    && cd cmake-$version.$build \
-    && sed -i 's/cmake_options="-DCMAKE_BOOTSTRAP=1"/cmake_options="-DCMAKE_BOOTSTRAP=1 -DCMAKE_USE_OPENSSL=ON"/' bootstrap  \
-    && ./bootstrap \
-    && make -j4 \
-    &&  make install \
-    && cmake --version \
-    rm cmake-$version.$build.tar.gz
-
 #################################################
 #     Python installations for dev              #
 #################################################
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python-dev \
-    python-opencv \
-    python-setuptools \
-    python-pytest
+	
+RUN apt-get update && apt-get install -y --no-install-recommends \ 
+	python3-setuptools 
 
 ##############################################
 #    Installing apps for build environment   #
@@ -71,6 +84,12 @@ RUN dpkg --add-architecture i386 && \
    protobuf-compiler \
    clang-format \
    zlib1g:i386 \
+   zlib1g:i386 \
+   libc6:i386 \
+   libncurses5:i386 \
+   libstdc++6:i386 \
+   libsm6 \
+   libxext6 \
    file \
    texinfo \
    cppcheck \
@@ -81,15 +100,35 @@ RUN dpkg --add-architecture i386 && \
    rm -f /var/cache/apt/*.bin
 
 
-############################################
+############################################	
 # Installing PIP and build environment app #
 ############################################
 
 RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
-    python /get-pip.py --no-setuptools && \
+    python3.6 get-pip.py && \
     rm get-pip.py
-
-RUN pip --no-cache-dir install \
+	
+RUN python3.6 -m pip --no-cache-dir install \
     xmltodict \
-    numpy==1.14.5 
+	numpy \
+	pytest \
+    opencv-python==3.4.3.18
+    
+    
+#########################################
+# Add Welcome Message With Instructions #
+#########################################
 
+RUN echo '[ ! -z "$TERM" -a -r /etc/motd ] && cat /etc/issue && cat /etc/motd' \
+	>> /etc/bash.bashrc \
+	; echo "\
+||||||||||||||||||||||||||||||||||||\n\
+|                                  |\n\
+| Docker Container Running Ubuntu  |\n\
+| Using As Linux Build Environment |\n\
+| For ADAS Project                 |\n\
+|                                  |\n\
+||||||||||||||||||||||||||||||||||||\n\
+\n "\
+	> /etc/motd
+  
