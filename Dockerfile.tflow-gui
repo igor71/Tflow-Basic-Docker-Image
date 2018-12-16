@@ -54,8 +54,8 @@ COPY BC4Key.txt /etc/
 #               Install Mercurial               #
 #################################################
 
-ARG MERCURIAL_COMMON_DEB=http://old-releases.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial-common_3.9.1-1_all.deb
-ARG MERCURIAL_DEB=http://old-releases.ubuntu.com/ubuntu/pool/universe/m/mercurial/mercurial_3.9.1-1_amd64.deb
+ARG MERCURIAL_COMMON_DEB=ftp://192.168.1.115/pub/Tflow-VNC-Soft/mercurial-common_3.9.1-1_all.deb
+ARG MERCURIAL_DEB=ftp://192.168.1.115/pub/Tflow-VNC-Soft/mercurial_3.9.1-1_amd64.deb
 RUN apt-get purge -y mercurial mercurial-common && \
     apt-get install -y --no-install-recommends libjs-excanvas && \
     curl -OSL ${MERCURIAL_COMMON_DEB} && \
