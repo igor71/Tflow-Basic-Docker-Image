@@ -35,6 +35,8 @@ Run docker image:
 
 pv /media/common/DOCKER_IMAGES/TFlow-Build/yi-adas-gui-0.1.tar | docker load
 
+docker tag e61196da813f yi/adas-gui:0.1
+
 yi-docker tflow-vnc-<your suffix_here> run :<port_number> 1920x1080 --image=yi/adas-gui  --version=0.1
 
 e.g.
