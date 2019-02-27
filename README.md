@@ -7,7 +7,7 @@ Make sure nvidia/cuda:X.0-cudnnX-devel-ubuntu16.04 or nvidia/cuda:X.0-cudnnX-bas
 
 nvidia/cuda:X.0-cudnnX-devel-ubuntu16.04 & nvidia/cuda:9.0-cudnn7-base-1.5-1.9 -->> used with tensorflow up to version 1.9
 
-nvidia/cuda:X.0-cudnnX-base  -->> used with tensorflow from version 1.10 and above
+nvidia/cuda:X.0-cudnnX-base  -->> used with tensorflow with version 1.10-1.11 (master branch only)
 
 Jenkins suppose to load docker image during buils proccess, if not:
 
