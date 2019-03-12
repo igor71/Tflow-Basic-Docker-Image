@@ -144,6 +144,3 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openssh-client && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-ENV NOTVISIBLE "in users profile"
-RUN echo "export VISIBLE=now" >> /etc/profile
