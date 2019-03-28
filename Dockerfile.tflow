@@ -103,11 +103,11 @@ RUN chmod +x /root/enable_docker.sh
 ###########################################################################################################################
 # Add docker executable: Docker binary copied into image to allow executing docker commands on the host from container    # 
 # it should be standalone binary:                                                                                         #
-# download from https://github.com/docker/docker/releases                                                                 #
+# download from https://download.docker.com/linux/static/stable/aarch64/                                                                 #
 # make sure it matches your daemon version                                                                                #
 ###########################################################################################################################
 
-COPY docker/docker-1.13.1-092cba3 /usr/bin/docker
+#COPY docker/docker-1.13.1-092cba3 /usr/bin/docker
 COPY nvidia-docker-via-rest-api.sh /usr/bin/nvidia-docker
 
 
@@ -116,7 +116,7 @@ COPY nvidia-docker-via-rest-api.sh /usr/bin/nvidia-docker
 ###########################################################
 
 RUN echo '#!/usr/bin/env bash\n\
-nvidia-docker run -it --rm --pid=host -v /var/run/docker.sock:/var/run/docker.sock:ro -v /etc/passwd:/etc/passwd:ro yi/gpu_status\n\
+docker run --runtime=nvidia -it --rm --pid=host -v /var/run/docker.sock:/var/run/docker.sock:ro -v /etc/passwd:/etc/passwd:ro yi/gpu_status\n\
 ' > /usr/local/bin/gpu_status \
   && chmod a+rx,o-w /usr/local/bin/gpu_status
 
