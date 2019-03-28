@@ -13,7 +13,7 @@ pv /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.t
 
 docker images
 
-docker tag <image_id> nvidia/cuda:X.0-cudnnX-base-1.12
+docker tag <image_id> nvidia/cuda:10.0-cudnn7-base
 ```
 
 ### Manual Buils steps:
