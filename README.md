@@ -18,7 +18,7 @@ docker tag <image_id> nvidia/cuda:10.0-cudnn7-base
 
 ### Manual Buils steps:
 ```
-git clone --branch=master --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
+git clone --branch=2.0 --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
 
 cd Tflow-Basic-Docker-Image
 
