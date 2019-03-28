@@ -22,7 +22,7 @@ RUN apt-get install -y --no-install-recommends \
 ARG IMAGEMAGIC_DEB=http://www.imagemagick.org/download/ImageMagick.tar.gz
 RUN curl -OSL ${IMAGEMAGIC_DEB} && \
     tar xvzf ImageMagick.tar.gz && \
-	cd ImageMagic* && \
+	cd ImageMagick-7.* && \
 	./configure && \
 	nc=`nproc` && \
 	make -j$nc && \
