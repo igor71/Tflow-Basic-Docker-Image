@@ -1,7 +1,7 @@
 # GUI Apps & Pycharm development environment
  
 FROM yi/tflow:latest
-SHELL ["/bin/bash", "-c"]
+
 
 #################################################
 #  Update repositories -- we will need them all #
