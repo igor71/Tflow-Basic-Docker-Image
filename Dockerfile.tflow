@@ -1,6 +1,6 @@
 # Base development environment: LXDE desktop with VNC and user management
 
-FROM nvidia/cuda:9.0-cudnn7-base-1.12
+FROM nvidia/cuda:10.0-cudnn7-base
 
 #################################################
 #  Update repositories -- we will need them all #
