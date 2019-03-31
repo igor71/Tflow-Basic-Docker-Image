@@ -1,0 +1,7 @@
+#! /bin/bash
+xsetroot -cursor_name left_ptr
+autocutsel -s CLIPBOARD -fork
+export XKL_XMODMAP_DISABLE=1
+openbox --sm-disable &
+pcmanfm --desktop &
+lxpanel
