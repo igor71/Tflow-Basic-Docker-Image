@@ -90,14 +90,14 @@ RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.10-1_
     rm gosu_1.10-1_amd64.deb && \
     apt-get install -f
 
-COPY add_user.sh /root/
-RUN chmod +x /root/add_user.sh
-COPY exec_as_user.sh /root/
-RUN chmod +x /root/exec_as_user.sh
-COPY exec_as_host_user_or_root.sh /root/
-RUN chmod +x /root/exec_as_host_user_or_root.sh
-COPY enable_docker.sh /root/
-RUN chmod +x /root/enable_docker.sh
+COPY add_user.sh /root/ && \
+     exec_as_user.sh /root/ && \
+     exec_as_host_user_or_root.sh /root/ && \
+     enable_docker.sh /root/
+RUN chmod +x /root/add_user.sh && \
+    chmod +x /root/exec_as_user.sh && \
+    chmod +x /root/exec_as_host_user_or_root.sh && \
+    chmod +x /root/enable_docker.sh
 
 
 ###########################################################################################################################
@@ -228,17 +228,8 @@ lxpanel \n\
 #       Final touches                           #
 #################################################
 
-RUN echo '#!/bin/bash\n\
-if [ -z "$HOST_USER" ]; then\n\
-    echo "Error: please specify $HOST_USER to run this docker image"\n\
-    exit 1\n\
-fi\n\
-/root/add_user.sh\n\
-/root/enable_docker.sh\n\
-USER=$HOST_USER gosu $HOST_USER /opt/setup_vnc.sh\n\
-exec /root/exec_as_host_user_or_root.sh "$@"\n\
-' > /root/entrypoint.sh && \
-    chmod +x /root/entrypoint.sh
+COPY entrypoint.sh /root/
+RUN chmod +x /root/entrypoint.sh
 
 ENTRYPOINT ["/tini", "--", "/root/entrypoint.sh"]
 CMD ["/opt/run_vncserver.sh"]
