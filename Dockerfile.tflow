@@ -107,7 +107,7 @@ RUN chmod +x /root/enable_docker.sh
 # make sure it matches your daemon version                                                                                #
 ###########################################################################################################################
 
-curl -OSL ftp://jenkins-cloud/pub/Tflow-VNC-Soft/Docker-Binares/docker-18.09.3-774a1f4 -o /usr/bin/docker/docker
+RUN curl -OSL ftp://jenkins-cloud/pub/Tflow-VNC-Soft/Docker-Binares/docker-18.09.3-774a1f4 -o /usr/bin/docker/docker
 COPY nvidia-docker-via-rest-api.sh /usr/bin/nvidia-docker
 
 
