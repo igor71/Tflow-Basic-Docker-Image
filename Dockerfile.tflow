@@ -209,9 +209,16 @@ COPY lxde_home_skel/. /etc/skel/
 #       Create Start Script                     #
 #################################################
 
-RUN mkdir -p /etc/skel/.vnc
-COPY xstartup /etc/skel/.vnc/
-RUN chmod +x /etc/skel/.vnc/xstartup
+RUN mkdir -p /etc/skel/.vnc && \
+printf '#! /bin/bash\n\
+xsetroot -cursor_name left_ptr\n\
+autocutsel -s CLIPBOARD -fork\n\
+export XKL_XMODMAP_DISABLE=1\n\
+openbox --sm-disable &\n\
+pcmanfm --desktop &\n\
+lxpanel \n\
+' > /etc/skel/.vnc/xstartup && \
+    chmod +x /etc/skel/.vnc/xstartup
 
   
 #################################################
