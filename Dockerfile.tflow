@@ -159,7 +159,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ################################################
 
 # Install vncserver
-RUN apt install -y tigervnc-standalone-server tigervnc-xorg-extension
+RUN apt-get install -y \
+    tightvncserver
 
 # x11-utils: some X libs, f.e. allowing videos in Xephyr
 # x11-server-utils: xrdb, xrandr and some other goodies
