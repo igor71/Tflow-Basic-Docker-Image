@@ -115,7 +115,7 @@ COPY nvidia-docker-via-rest-api.sh /usr/bin/nvidia-docker
 #   Set gpu_status command work inside docker container   #
 ###########################################################
 
-RUN echo '#!/usr/bin/env bash\n\
+RUN printf '#!/usr/bin/env bash\n\
 nvidia-docker run -it --rm --pid=host -v /var/run/docker.sock:/var/run/docker.sock:ro -v /etc/passwd:/etc/passwd:ro yi/gpu_status\n\
 ' > /usr/local/bin/gpu_status \
   && chmod a+rx,o-w /usr/local/bin/gpu_status
@@ -215,22 +215,22 @@ COPY lxde_home_skel/. /etc/skel/
 #################################################
 
 RUN mkdir -p /etc/skel/.vnc && \
-    echo '#! /bin/bash\n\
-xsetroot -cursor_name left_ptr\n\
-autocutsel -s CLIPBOARD -fork\n\
-export XKL_XMODMAP_DISABLE=1\n\
-openbox --sm-disable &\n\
-pcmanfm --desktop &\n\
-lxpanel \n\
-' > /etc/skel/.vnc/xstartup && \
-    chmod +x /etc/skel/.vnc/xstartup
+    printf '#! /bin/bash\n\
+    xsetroot -cursor_name left_ptr\n\
+    autocutsel -s CLIPBOARD -fork\n\
+    export XKL_XMODMAP_DISABLE=1\n\
+    openbox --sm-disable &\n\
+    pcmanfm --desktop &\n\
+    lxpanel \n\
+    ' > /etc/skel/.vnc/xstartup && \
+        chmod +x /etc/skel/.vnc/xstartup
 
 
 #################################################
 #       Final touches                           #
 #################################################
 
-RUN echo '#!/bin/bash\n\
+RUN printf '#!/bin/bash\n\
 if [ -z "$HOST_USER" ]; then\n\
     echo "Error: please specify $HOST_USER to run this docker image"\n\
     exit 1\n\
