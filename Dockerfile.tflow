@@ -90,10 +90,7 @@ RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.10-1_
     rm gosu_1.10-1_amd64.deb && \
     apt-get install -f
 
-COPY add_user.sh /root/ && \
-     exec_as_user.sh /root/ && \
-     exec_as_host_user_or_root.sh /root/ && \
-     enable_docker.sh /root/
+COPY add_user.sh exec_as_user.sh exec_as_host_user_or_root.sh enable_docker.sh /root/ 
 RUN chmod +x /root/add_user.sh && \
     chmod +x /root/exec_as_user.sh && \
     chmod +x /root/exec_as_host_user_or_root.sh && \
