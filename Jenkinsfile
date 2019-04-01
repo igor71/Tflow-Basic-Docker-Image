@@ -4,23 +4,12 @@ pipeline {
 	stage('Import Base Docker Image') {
             steps {
                 sh '''#!/bin/bash -xe
-		   # Bacic Docker Image For Tensorflow Version 2.0
-                      image_id="$(docker images -q nvidia/cuda:10.0-cudnn7-base)"
-                      echo "Available Basic Docker Image Is: $image_id"
-                    
-                   # Check If Docker Image Exist On Desired Server
-                   if [ "$image_id" != "776e9a3a3370" ]; then
-		      echo "Wrong Docker Image!!! Removing..."
-		      docker rmi -f nvidia/cuda:10.0-cudnn7-base
-		      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.tar | docker load
-                      docker tag 72ae4fdb8787 nvidia/cuda:10.0-cudnn7-base
-                      echo "DONE!!!"
-                   elif [ "$image_id" != "" ]; then
-                         echo "Docker Image Dosen't Exist!!!"
-                         pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.tar | docker load
-                         docker tag 72ae4fdb8787 nvidia/cuda:10.0-cudnn7-base
+		   if test ! -z "$(docker images -q nvidia/cuda:10.0-cudnn7-base)"; then
+                      echo "Docker Image Already Exist!!!"
                    else
-                      echo "Docker Image Already Exist"
+                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.tar | docker load
+                      docker tag 776e9a3a3370 nvidia/cuda:10.0-cudnn7-base
+                      echo "DONE!!!"
                    fi
 		            ''' 
             }
