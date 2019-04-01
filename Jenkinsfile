@@ -10,12 +10,12 @@ pipeline {
 		      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.tar | docker load
                       docker tag 72ae4fdb8787 nvidia/cuda:10.0-cudnn7-base
                       echo "DONE!!!"
+                   elif [ "$image_id" != "" ]; then
+                         echo "Docker Image Dosen't Exist!!!"
+                         pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.tar | docker load
+                         docker tag 72ae4fdb8787 nvidia/cuda:10.0-cudnn7-base
                    else
-		      echo "Docker Image Already Exist"
-	           elif [ "$image_id" != "" ]; then
-                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.tar | docker load
-                      docker tag 72ae4fdb8787 nvidia/cuda:10.0-cudnn7-base
-                      echo "DONE!!!"
+                      echo "Docker Image Already Exist"
                    fi
 		            ''' 
             }
