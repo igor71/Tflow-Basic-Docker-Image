@@ -24,3 +24,7 @@ cd Tflow-Basic-Docker-Image
 
 ./tflow-build-all.sh
 ```
+### Check Docker Errors
+```
+docker logs --tail 50 --follow --timestamps <docker_container_name>
+```
