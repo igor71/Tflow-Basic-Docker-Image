@@ -4,6 +4,10 @@ pipeline {
 	stage('Import Base Docker Image') {
             steps {
                 sh '''#!/bin/bash -xe
+		   # Bacic Docker Image For Tensorflow Version 2.0
+                      image_id="$(docker images -q yi/tflow-gui:latest)"
+                      echo "Available Basic Docker Image Is: $image_id"
+		      
 		   if [ "$image_id" != "776e9a3a3370" ]; then
 		         echo "Wrong Docker Image!!! Removing..."
                          docker rmi -f yi/tflow-gui:latest
