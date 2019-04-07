@@ -46,7 +46,6 @@ RUN apt-get install -y --no-install-recommends \
     zip \
     unzip \
     rsync \
-    silversearcher-ag \
     openssh-client \
     software-properties-common \
     build-essential \
@@ -81,7 +80,7 @@ ADD inputrc /etc/inputrc
 
 
 #################################################
-#     User and system management                #
+#            User & System Management           #
 #################################################
 
 # gosu - run as user (avoids problems with sudo and su)
@@ -99,13 +98,13 @@ RUN chmod +x /root/add_user.sh && \
 
 ###########################################################################################################################
 # Add docker executable: Docker binary copied into image to allow executing docker commands on the host from container    # 
-# it should be standalone binary:                                                                                         #
-# download from https://download.docker.com/linux/static/stable/aarch64/                                                                 #
-# make sure it matches your daemon version                                                                                #
+# it should be standalone binary (located in /usr/bin/docker on the host) or :                                                                                         #
+# download from https://github.com/docker/docker/releases                                                                 #
+# make sure it matches your daemon version (docker --version)                                                                               #
 ###########################################################################################################################
 
-RUN curl -OSL ftp://jenkins-cloud/pub/Tflow-VNC-Soft/Docker-Binares/docker-18.09.3-774a1f4 -o /usr/bin/docker/docker
-COPY nvidia-docker-via-rest-api.sh /usr/bin/nvidia-docker
+RUN curl -fsSL ftp://jenkins-cloud/pub/Tflow-VNC-Soft/Docker-Binares/docker-18.09.3-774a1f4 -o /usr/bin/docker && \
+    chmod a+rx,g-x /usr/bin/docker
 
 
 ###########################################################
@@ -177,11 +176,9 @@ RUN apt-get install -y --no-install-recommends \
 #       Prepare to run VNC server               #
 #################################################
 
-COPY setup_vnc.sh /opt/
-RUN chmod +x /opt/setup_vnc.sh
-
-COPY run_vncserver.sh   /opt/
-RUN chmod +x /opt/run_vncserver.sh
+COPY setup_vnc.sh run_vncserver.sh /opt/
+RUN chmod +x /opt/setup_vnc.sh && \
+    chmod +x /opt/run_vncserver.sh
 
 
 #################################################
@@ -225,8 +222,17 @@ lxpanel \n\
 #       Final touches                           #
 #################################################
 
-COPY entrypoint.sh /root/
-RUN chmod +x /root/entrypoint.sh
+RUN printf '#!/bin/bash\n\
+if [ -z "$HOST_USER" ]; then\n\
+    echo "Error: please specify $HOST_USER to run this docker image"\n\
+    exit 1\n\
+fi\n\
+/root/add_user.sh\n\
+/root/enable_docker.sh\n\
+USER=$HOST_USER gosu $HOST_USER /opt/setup_vnc.sh\n\
+exec /root/exec_as_host_user_or_root.sh "$@"\n\
+' > /root/entrypoint.sh && \
+    chmod +x /root/entrypoint.sh
 
 ENTRYPOINT ["/tini", "--", "/root/entrypoint.sh"]
 CMD ["/opt/run_vncserver.sh"]
