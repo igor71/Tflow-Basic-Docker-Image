@@ -1,4 +1,4 @@
 [Command]
 FileManager=pcmanfm %s 
-Terminal=xterm
+Terminal=lxterminal
 Logout=pkill lxpanel
