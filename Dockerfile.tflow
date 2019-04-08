@@ -117,17 +117,6 @@ docker run --runtime=nvidia -it --rm --pid=host -v /var/run/docker.sock:/var/run
   && chmod a+rx,o-w /usr/local/bin/gpu_status
 
 
-#################################################
-#     Fix problems with dictionaries-common     #
-#################################################
-
-# See https://bugs.launchpad.net/ubuntu/+source/dictionaries-common/+bug/873551
-RUN apt-get install -y \
-    apt-utils && \
-    /usr/share/debconf/fix_db.pl && \
-    apt-get install -y -f
-
-
 ##########################################################
 #  Some utils to have proper menus, mime file types etc. #
 ##########################################################
@@ -196,7 +185,6 @@ RUN apt-get install -y --no-install-recommends \
     galculator \
     lxterminal \
     lxtask && \
-    apt-get install -y terminator && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
