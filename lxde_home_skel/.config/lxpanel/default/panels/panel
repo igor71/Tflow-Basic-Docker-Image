@@ -69,7 +69,7 @@ Plugin {
             id=/usr/share/applications/leafpad.desktop
         }
         Button {
-            id=lxde-x-terminal-emulator.desktop
+            id=/usr/share/applications/lxterminal.desktop
         }
         Button {
             id=/usr/share/applications/byobu.desktop
