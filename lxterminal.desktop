@@ -1,0 +1,20 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=LXTerminal
+Name[he]=תכנית המסוף LXTerminal
+Name[ru]=LXTerminal
+Name[uk]=LX-термінал
+GenericName=Terminal
+GenericName[he]=מסוף
+GenericName[ru]=Терминал
+GenericName[uk]=Термінал
+Comment=Use the command line
+Comment[he]=שימוש בשורת הפקודה
+Comment[ru]=Использовать командную строку
+Comment[uk]=Використати командну стрічку
+TryExec=lxterminal
+Exec=lxterminal
+Icon=lxterminal
+Type=Application
+Categories=GTK;System;TerminalEmulator;
+Keywords=console;command line;execute;
