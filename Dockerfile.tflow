@@ -186,9 +186,11 @@ RUN apt-get install -y --no-install-recommends \
     lxterminal \
     lxtask && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/* && \
+    rm -f /usr/share/applications/lxterminal.desktop
     
 COPY lxde_home_skel/. /etc/skel/
+COPY lxterminal.desktop /usr/share/applications/lxterminal.desktop
 
 
 #################################################
