@@ -8,12 +8,12 @@ pipeline {
                       image_id="$(docker images -q nvidia/cuda:10.0-cudnn7-base)"
                       echo "Available Basic Docker Image Is: $image_id"
 		      
-		   if [ "$image_id" != "776e9a3a3370" ]; then
+		   if [ "$image_id" != "2a9e5a41bb75" ]; then
 		         echo "Wrong Docker Image!!! Removing..."
                          docker rmi -f nvidia/cuda:10.0-cudnn7-base
                    else
-                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base.tar | docker load
-                      docker tag 776e9a3a3370 nvidia/cuda:10.0-cudnn7-base
+                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base-ubuntu16.04.tar | docker load
+                      docker tag 2a9e5a41bb75 nvidia/cuda:10.0-cudnn7-base
                       echo "DONE!!!"
                    fi
 		            ''' 
