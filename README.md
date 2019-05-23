@@ -20,6 +20,8 @@ git clone --branch=develop --depth=1 https://github.com/igor71/Tflow-Basic-Docke
 cd Tflow-Basic-Docker-Image
 
 bash tflow-build-all.sh
+
+docker build -f Dockerfile.tf-cpu -t yi/tflow-vnc:x.x.x-python-3.6-cpu .
 ```
 ### Manual Buils Steps For ADAS-BUILD Docker:
 ```
