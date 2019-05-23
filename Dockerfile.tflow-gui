@@ -19,8 +19,8 @@ RUN apt-get install -y --no-install-recommends \
     openssl \
     libssl-dev
  
-ARG version=3.12 
-ARG build=3 
+ARG version=3.14 
+ARG build=4 
 RUN cd /usr/local/src \
     && wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz \
     && tar -xzvf cmake-$version.$build.tar.gz \
@@ -130,7 +130,7 @@ RUN add-apt-repository --remove ppa:openjdk-r/ppa
 # Install SmartGit #
 ####################
 	
-ARG SMARTGIT_DEB=https://www.syntevo.com/downloads/smartgit/smartgit-18_2_1.deb
+ARG SMARTGIT_DEB=https://www.syntevo.com/downloads/smartgit/smartgit-18_2_8.deb
 RUN curl -OSL ${SMARTGIT_DEB} && \
     dpkg -i $(basename ${SMARTGIT_DEB}) && \
     rm $(basename ${SMARTGIT_DEB}) && \
