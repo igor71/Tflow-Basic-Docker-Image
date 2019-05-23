@@ -90,7 +90,7 @@ RUN apt-get install -y --no-install-recommends \
 #              Install PyCharm                  #
 #################################################
 
-ARG PYCHARM_NAME=pycharm-community-2018.1.4
+ARG PYCHARM_NAME=pycharm-community-2018.3.4
 ARG PYCHARM_URL=https://download.jetbrains.com/python/${PYCHARM_NAME}.tar.gz
 RUN curl -SL ${PYCHARM_URL} \
     | tar -xzC /opt/
