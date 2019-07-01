@@ -94,7 +94,7 @@ COPY pycharm.desktop /usr/local/share/applications/
 #             Install BeyondCompare             #
 #################################################
 
-ARG BCOMPARE_DEB=https://www.scootersoftware.com/bcompare-4.2.6.23150_amd64.deb
+ARG BCOMPARE_DEB=https://www.scootersoftware.com/bcompare-4.2.10.23938_amd64.deb
 RUN apt-get install -y --no-install-recommends \
     gdebi-core \
     fonts-inconsolata \
