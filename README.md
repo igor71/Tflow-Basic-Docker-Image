@@ -1,24 +1,24 @@
-# Tflow-Basic-Docker-Image
-### Basic Image for building yi/tflow-vnc:xxx docker image
+# Tflow-Horovod-Basic-Docker-Image
+### Basic Image for building yi/tflow-vnc:xxx-horovod docker image
 
 ### Pre Requerements:
 ```
-Make sure nvidia/cuda:10.0-cudnn7-base image existing on the target server
+Make sure nvidia/cuda:9.0-cudnn7-base-horovod image existing on the target server
 
-nvidia/cuda:10.0-cudnn7-base  -->> based ubuntu 16.04, used with tensorflow from version 2.0, Cuda v.10.0.105 & CuDNN v.7.4.1.5
+nvidia/cuda:9.0-cudnn7-base-horovod  -->> based ubuntu 16.04, used with tensorflow from version 1.12, Cuda v.9.0.176 & CuDNN v.7.6.0.64
 
 Jenkins suppose to load docker image during buils proccess, if not:
 
-pv /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base | docker load
+pv /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-base-horovod-ubuntu16.04.tar | docker load
 
 docker images
 
-docker tag <image_id> nvidia/cuda:X.X-cudnnX-base
+docker tag <image_id> nvidia/cuda:9.0-cudnn7-base-horovod
 ```
 
 ### Manual Buils steps:
 ```
-git clone --branch=2.0-ubuntu-16.04 --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
+git clone --branch=1.1x-horovod --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
 
 cd Tflow-Basic-Docker-Image
 
