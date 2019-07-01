@@ -72,7 +72,7 @@ RUN apt-get install -y --no-install-recommends \
 #              Install PyCharm                  #
 #################################################
 
-ARG PYCHARM_NAME=pycharm-community-2018.3.4
+ARG PYCHARM_NAME=pycharm-community-2019.1.3
 ARG PYCHARM_URL=https://download.jetbrains.com/python/${PYCHARM_NAME}.tar.gz
 RUN curl -SL ${PYCHARM_URL} \
     | tar -xzC /opt/
@@ -128,7 +128,7 @@ RUN add-apt-repository --remove ppa:openjdk-r/ppa
 # Install SmartGit #
 ####################
 	
-ARG SMARTGIT_DEB=https://www.syntevo.com/downloads/smartgit/smartgit-18_2_6.deb
+ARG SMARTGIT_DEB=https://www.syntevo.com/downloads/smartgit/smartgit-18_2_9.deb
 RUN curl -OSL ${SMARTGIT_DEB} && \
     dpkg -i $(basename ${SMARTGIT_DEB}) && \
     rm $(basename ${SMARTGIT_DEB}) && \
