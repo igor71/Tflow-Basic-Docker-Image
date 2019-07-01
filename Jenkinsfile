@@ -5,15 +5,20 @@ pipeline {
             steps {
                 sh '''#!/bin/bash -xe
 		   # Bacic Docker Image For Tensorflow Version 2.0
-                      image_id="$(docker images -q nvidia/cuda:10.0-cudnn7-base)"
+                      image_id="$(docker images -q nvidia/cuda:9.0-cudnn7-base-horovod)"
                       echo "Available Basic Docker Image Is: $image_id"
 		      
-		   if [ "$image_id" != "2a9e5a41bb75" ]; then
-		         echo "Wrong Docker Image!!! Removing..."
-                         docker rmi -f nvidia/cuda:10.0-cudnn7-base
+		   if [ "$image_id" != "e3f90c878960" ]; then
+		      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-base-horovod-ubuntu16.04.tar | docker load
+                      docker tag e3f90c878960 nvidia/cuda:9.0-cudnn7-base-horovod
+                      echo "DONE!!!"
+		      echo "Wrong Docker Image!!! Removing..."
+                      docker rmi -f nvidia/cuda:10.0-cudnn7-base
                    else
-                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base-ubuntu16.04.tar | docker load
-                      docker tag 2a9e5a41bb75 nvidia/cuda:10.0-cudnn7-base
+		      echo "Wrong Docker Image!!! Removing..."
+                      docker rmi -f nvidia/cuda:9.0-cudnn7-base-horovod
+		      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-base-horovod-ubuntu16.04.tar | docker load
+                      docker tag e3f90c878960 nvidia/cuda:9.0-cudnn7-base-horovo
                       echo "DONE!!!"
                    fi
 		            ''' 
