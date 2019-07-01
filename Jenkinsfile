@@ -12,8 +12,6 @@ pipeline {
 		      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-base-horovod-ubuntu16.04.tar | docker load
                       docker tag e3f90c878960 nvidia/cuda:9.0-cudnn7-base-horovod
                       echo "DONE!!!"
-		      echo "Wrong Docker Image!!! Removing..."
-                      docker rmi -f nvidia/cuda:10.0-cudnn7-base
                    else
 		      echo "Wrong Docker Image!!! Removing..."
                       docker rmi -f nvidia/cuda:9.0-cudnn7-base-horovod
