@@ -49,7 +49,6 @@ RUN apt-get install -y --no-install-recommends \
     iputils-ping \
     dnsutils \
     net-tools \
-    silversearcher-ag \
     openssh-client \
     software-properties-common \
     build-essential \
