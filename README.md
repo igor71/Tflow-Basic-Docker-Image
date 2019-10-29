@@ -3,13 +3,17 @@
 
 ### Pre Requerements:
 ```
-Make sure nvidia/cuda:10.0-cudnn7-base-horovod image existing on the target server
+Make sure nvidia/cuda:10.0-cudnn7-base-horovod image (with or without NCCL) existing on the target server
 
-nvidia/cuda:10.0-cudnn7-base-horovod  -->> based ubuntu 18.04, used with tensorflow from version 1.14, Cuda v.10.0.130 & CuDNN v.7.6.0.64
+nvidia/cuda:10.0-cudnn7-base-horovod  -->> Image_ID efd0a8ea6627, based on ubuntu 18.04, used with tensorflow from version 1.14, Cuda v.10.0.130, CuDNN v.7.6.0.64 & preinstalled NCCL v. 2.4.2
+
+nvidia/cuda:10.0-cudnn7-base-horovod  -->> Image_ID c9543dfc5cd3, based on ubuntu 18.04, used with tensorflow from version 1.14, Cuda v.10.0.130, CuDNN v.7.6.2.24, without preinstalled NCCL version
 
 Jenkins suppose to load docker image during buils proccess, if not:
 
 pv /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base-horovod-ubuntu18.04.tar | docker load
+
+pv /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base-nonccl-ubuntu18.04.tar | docker load
 
 docker images
 
