@@ -32,3 +32,5 @@ cd Tflow-Basic-Docker-Image
 ```
 docker logs --tail 50 --follow --timestamps <docker_container_name>
 ```
+
+*If bulding with Jenkins CI/CD, make sure rename active Jenkinsfile*
