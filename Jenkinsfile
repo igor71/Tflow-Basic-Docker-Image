@@ -4,17 +4,16 @@ pipeline {
 	stage('Import Base Docker Image') {
             steps {
                 sh '''#!/bin/bash -xe
-		               # Bacic Docker Image For Horovod & Tensorflow Version 1.14.0 and above
+		      # Bacic Docker Image For Horovod & Tensorflow Version 1.14.0 and above
                       image_id="$(docker images -q nvidia/cuda:10.0-cudnn7-base-horovod)"
                       echo "Available Basic Docker Image Is: $image_id"
 		      
-		               if [ "$image_id" != "c9543dfc5cd3" ]; then
-                      docker rmi -f nvidia/cuda:10.0-cudnn7-base-horovod
-		                  pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base-nonccl-ubuntu18.04.tar | docker load
+		   if [ "$image_id" != "c9543dfc5cd3" ]; then
+                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base-nonccl-ubuntu18.04.tar | docker load
                       docker tag c9543dfc5cd3 nvidia/cuda:10.0-cudnn7-base-horovod
                       echo "DONE!!!"
                    else
-		                  echo "Docker Image Already Exist!!!"
+		      echo "Docker Image Already Exist!!!"
                       echo "DONE!!!"
                    fi
 		            ''' 
