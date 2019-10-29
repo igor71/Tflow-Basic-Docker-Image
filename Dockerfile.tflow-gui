@@ -128,7 +128,7 @@ RUN add-apt-repository --remove ppa:openjdk-r/ppa
 # Install SmartGit #
 ####################
 	
-ARG SMARTGIT_DEB=https://www.syntevo.com/downloads/smartgit/smartgit-18_2_9.deb
+ARG SMARTGIT_DEB=https://www.syntevo.com/downloads/smartgit/smartgit-19_1_4.deb
 RUN curl -OSL ${SMARTGIT_DEB} && \
     dpkg -i $(basename ${SMARTGIT_DEB}) && \
     rm $(basename ${SMARTGIT_DEB}) && \
