@@ -4,8 +4,8 @@ pipeline {
 	stage('Import Base Docker Image') {
             steps {
                 sh '''#!/bin/bash -xe
-		      # Bacic Docker Image For Horovod & Tensorflow Version 1.14.0 and above
-                      image_id="$(docker images -q nvidia/cuda:10.0-cudnn7-base-horovod)"
+		      # Bacic Docker Image For Cafee & Tensorflow Version 1.13.0 and bellow
+                      image_id="$(docker images -q nvidia/cuda:9.0-cudnn7-base-cafee-tf)"
                       echo "Available Basic Docker Image Is: $image_id"
 		      
 		   if [ "$image_id" != "c9543dfc5cd3" ]; then
