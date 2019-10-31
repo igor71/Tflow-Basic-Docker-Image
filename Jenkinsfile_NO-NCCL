@@ -5,12 +5,12 @@ pipeline {
             steps {
                 sh '''#!/bin/bash -xe
 		      # Bacic Docker Image For Cafee & Tensorflow Version 1.13.0 and bellow
-                      image_id="$(docker images -q nvidia/cuda:9.0-cudnn7-base-cafee-tf)"
+                      image_id="$(docker images -q nvidia/cuda:9.0-cudnn7-base)"
                       echo "Available Basic Docker Image Is: $image_id"
 		      
-		   if [ "$image_id" != "c9543dfc5cd3" ]; then
-                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-10.0-cudnn7-base-nonccl-ubuntu18.04.tar | docker load
-                      docker tag c9543dfc5cd3 nvidia/cuda:10.0-cudnn7-base-horovod
+		   if [ "$image_id" != "544c04b3d677" ]; then
+                      pv -f /media/common/DOCKER_IMAGES/Nvidia/BasicImages/nvidia-cuda-9.0-cudnn7-base-nonccl-ubuntu16.04.tar | docker load
+                      docker tag 544c04b3d677 nvidia/cuda:9.0-cudnn7-base
                       echo "DONE!!!"
                    else
 		      echo "Docker Image Already Exist!!!"
