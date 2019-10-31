@@ -18,7 +18,7 @@ docker tag <image_id> nvidia/cuda:9.0-cudnn7-base-horovod
 
 ### Manual Buils steps:
 ```
-git clone --branch=1.13- --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
+git clone --branch=1.13-No-NCCL-CUDA-9.0 --depth=1 https://github.com/igor71/Tflow-Basic-Docker-Image/
 
 cd Tflow-Basic-Docker-Image
 
