@@ -65,7 +65,6 @@ RUN apt-get install -y --no-install-recommends \
 # Add Tini
 ARG TINI_VERSION=v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
-
 RUN chmod +x /tini
 
 
@@ -73,7 +72,7 @@ RUN chmod +x /tini
 #     Shell niceties                            #
 #################################################
 
-# show docker name in prompts
+# Show docker name in prompts
 RUN echo 'export PS1="[${CONTAINER:-docker}] $PS1"' | tee -a /etc/skel/.bashrc /root/.bashrc
 # nice input
 ADD inputrc /etc/inputrc
@@ -89,7 +88,7 @@ RUN curl -OSL http://mirrors.kernel.org/ubuntu/pool/universe/g/gosu/gosu_1.10-1_
     rm gosu_1.10-1_amd64.deb && \
     apt-get install -f
 
-COPY add_user.sh exec_as_user.sh exec_as_host_user_or_root.sh enable_docker.sh /root/ 
+COPY add_user.sh exec_as_user.sh exec_as_host_user_or_root.sh enable_docker.sh /root/
 RUN chmod +x /root/add_user.sh && \
     chmod +x /root/exec_as_user.sh && \
     chmod +x /root/exec_as_host_user_or_root.sh && \
@@ -117,6 +116,17 @@ docker run --runtime=nvidia -it --rm --pid=host -v /var/run/docker.sock:/var/run
   && chmod a+rx,o-w /usr/local/bin/gpu_status
 
 
+#################################################
+#     Fix problems with dictionaries-common     #
+#################################################
+
+# See https://bugs.launchpad.net/ubuntu/+source/dictionaries-common/+bug/873551
+RUN apt-get install -y \
+    apt-utils && \
+    /usr/share/debconf/fix_db.pl && \
+    apt-get install -y -f
+
+
 ##########################################################
 #  Some utils to have proper menus, mime file types etc. #
 ##########################################################
@@ -139,8 +149,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     lxde-common && \
     apt-get install -y \
     lxde-icon-theme \
-    ttf-ubuntu-font-family
-   
+    ttf-ubuntu-font-family \
+    gnome-icon-theme-full \
+    hicolor-icon-theme \
+    xcursor-themes
 
 ################################################
 #     VNC server                               #
@@ -183,14 +195,12 @@ RUN apt-get install -y --no-install-recommends \
     obconf \
     xarchiver \
     galculator \
-    lxterminal \
     lxtask && \
+    apt-get install -y gnome-terminal && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -f /usr/share/applications/lxterminal.desktop
-    
+    rm -rf /var/lib/apt/lists/*
+
 COPY lxde_home_skel/. /etc/skel/
-COPY lxterminal.desktop /usr/share/applications/lxterminal.desktop
 
 
 #################################################
@@ -198,19 +208,19 @@ COPY lxterminal.desktop /usr/share/applications/lxterminal.desktop
 #################################################
 
 RUN mkdir -p /etc/skel/.vnc && \
-printf '#! /bin/bash\n\
-xsetroot -cursor_name left_ptr\n\
-autocutsel -s CLIPBOARD -fork\n\
-export XKL_XMODMAP_DISABLE=1\n\
-openbox --sm-disable &\n\
-pcmanfm --desktop &\n\
-lxpanel \n\
-' > /etc/skel/.vnc/xstartup && \
-    chmod +x /etc/skel/.vnc/xstartup
+    printf '#! /bin/bash\n\
+    xsetroot -cursor_name left_ptr\n\
+    autocutsel -s CLIPBOARD -fork\n\
+    export XKL_XMODMAP_DISABLE=1\n\
+    openbox --sm-disable &\n\
+    pcmanfm --desktop &\n\
+    lxpanel \n\
+    ' > /etc/skel/.vnc/xstartup && \
+      chmod +x /etc/skel/.vnc/xstartup
 
-  
+
 #################################################
-#         Creating Entypoint Script             #
+#       Final touches                           #
 #################################################
 
 RUN printf '#!/bin/bash\n\
